@@ -60,8 +60,7 @@ find modules/apps/static -name "*.jar" |grep -v sources >> jar_list
 for line in $(cat jar_list)
 do
 	jar=$(basename $line)
-	count=$(grep ${jar%-*}.jar .classpath_backup |wc -l)
-	if [ $count -eq 0 ]
+	if ! grep -q ${jar%-*}.jar .classpath_backup
 	then
 		echo -e "\t<classpathentry kind=\"lib\" path=\"$line\"/>" >> .classpath_aux
 	fi
