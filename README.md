@@ -5,7 +5,7 @@ This script adds to liferay eclipse project all `src` directories from osgi modu
 ## Installation
 Just copy the sh files to your system
 
-For windows users: you can launch the script using [cygwin](https://www.cygwin.com/)
+For windows users: you can launch the script using git bash, [cygwin](https://www.cygwin.com/) or [mingw](http://www.mingw.org/)
 
 ## Usage
 1. Important: Before using the script, execute `ant all` in order to download all `jar` dependencies
