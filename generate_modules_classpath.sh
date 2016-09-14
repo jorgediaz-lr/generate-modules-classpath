@@ -49,7 +49,7 @@ cat .classpath_aux | sort -u >> .classpath
 
 rm .classpath_aux
 
-for i in $(ls -1d .gradle/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done > jar_list
+for i in $(ls -1d ~/.gradle/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done > jar_list
 
 find .gradle/wrapper/dists -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list
 
