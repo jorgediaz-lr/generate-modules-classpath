@@ -19,6 +19,22 @@ then
 	exit 0
 fi
 
+GRADLE_DIR=.gradle
+
+if [ ! -d ${GRADLE_DIR}/caches/modules-2/files-2.1/com.liferay ]
+then
+	GRADLE_DIR=~/.gradle
+
+	if [ ! -d ${GRADLE_DIR}/caches/modules-2/files-2.1/com.liferay ]
+	then
+		echo "Error: '.gradle' directory not found or it doesn't contain JARs!!!"
+		echo "Try execute 'ant all' before using this script"
+		exit 0
+	fi
+
+	echo "Info: '.gradle' directory not found in current folder, using from USER_HOME"
+fi
+
 if [ ! -f .classpath_backup ]
 then
 	mv .classpath .classpath_backup
@@ -59,9 +75,9 @@ cat .classpath_aux | sort -u >> .classpath
 
 rm .classpath_aux
 
-for i in $(ls -1d .gradle/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done > jar_list
+for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done > jar_list
 
-find .gradle/wrapper/dists -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list
+find ${GRADLE_DIR}/wrapper/dists -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list
 
 find modules/apps/opensocial -name "shindig-*.jar" >> jar_list
 
