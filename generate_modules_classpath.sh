@@ -65,13 +65,15 @@ cat .classpath_aux | sort -u >> .classpath
 
 rm .classpath_aux
 
-for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done > jar_list
+for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" > jar_list
 
 find ${GRADLE_DIR}/wrapper/dists -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list
 
 find modules/apps/opensocial -name "shindig-*.jar" >> jar_list
 
 find modules/apps/static -name "*.jar" |grep -v sources >> jar_list
+
+find modules/private/apps/documentum -name "*.jar" |grep -v "com.liferay" >> jar_list
 
 for line in $(cat jar_list)
 do
