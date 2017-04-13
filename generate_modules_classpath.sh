@@ -51,6 +51,11 @@ do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
 done
 
+for i in $(find modules -name resources |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "modules/test/" )
+do
+	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
+done
+
 for i in $(find modules -name service |grep docroot/WEB-INF/service |grep -v "com/liferay")
 do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
