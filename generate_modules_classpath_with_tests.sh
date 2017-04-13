@@ -51,7 +51,7 @@ do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
 done
 
-for i in $(find modules -name resources |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" )
+for i in $(find modules -name resources |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" )
 do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
 done
@@ -71,7 +71,7 @@ do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
 done
 
-for i in $(find modules -name integration |grep "test/integration" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u )
+for i in $(find modules -name integration |grep "test/integration" | grep -v "/node_modules/" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u )
 do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
 done
