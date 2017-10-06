@@ -46,51 +46,48 @@ let NUMLINES=NUMLINES-1
 head -n $NUMLINES .classpath_backup | grep -v "path=\"modules" |grep -v "lib/development/jasper.jar" > .classpath
 rm .classpath_aux 2> /dev/null
 
-for i in $(find modules -name java |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" )
+rm java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6 2> /dev/null
+
+find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" >> java_list_1 &
+
+find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" >> java_list_2 &
+
+find modules -type d -name "service" |grep docroot/WEB-INF/service |grep -v "com/liferay" >> java_list_3 &
+
+find modules -type d -name "src" |grep "docroot/WEB-INF" >> java_list_4 &
+
+find . -type d -name "java" |grep -v "src/main/java" |grep "src/test" | sort -u >> java_list_5 &
+
+find modules -type d -name "integration" |grep "test/integration" | grep -v "/node_modules/" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u >> java_list_6 &
+
+wait
+
+for line in $(cat java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6)
 do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
+	echo -e "\t<classpathentry kind=\"src\" path=\"$line\"/>" >> .classpath_aux
 done
 
-for i in $(find modules -name resources |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" )
-do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
-done
-
-for i in $(find modules -name service |grep docroot/WEB-INF/service |grep -v "com/liferay")
-do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
-done
-
-for i in $(find modules -name "src" |grep "docroot/WEB-INF" )
-do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
-done
-
-for i in $(find . -name java |grep -v "src/main/java" |grep "src/test" | sort -u )
-do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
-done
-
-for i in $(find modules -name integration |grep "test/integration" | grep -v "/node_modules/" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u )
-do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$i\"/>" >> .classpath_aux
-done
+rm java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6 2> /dev/null
 
 cat .classpath_aux | sort -u >> .classpath
 
 rm .classpath_aux
 
-for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do find $i  -name "*.jar" |tail -1 ; done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" > jar_list
+rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
 
-find ${GRADLE_DIR}/wrapper/dists -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list
+for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do (find $i -type f -name "*.jar" |tail -1) & done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" >> jar_list_1 &
 
-find modules/apps/opensocial -name "shindig-*.jar" >> jar_list
+find ${GRADLE_DIR}/wrapper/dists -type f -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list_2 &
 
-find modules/apps/static -name "*.jar" |grep -v sources >> jar_list
+find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
-find modules/private/apps/documentum -name "*.jar" |grep -v "com.liferay" >> jar_list
+find modules/apps/static -type f -name "*.jar" |grep -v sources >> jar_list_4 &
 
-for line in $(cat jar_list)
+find modules/private/apps/documentum -type f -name "*.jar" |grep -v "com.liferay" >> jar_list_5 &
+
+wait
+
+for line in $(cat jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5)
 do
 	jar=$(basename $line)
 	if ! grep -q ${jar%-*}.jar .classpath_backup
@@ -103,7 +100,7 @@ cat .classpath_aux | sort -u >> .classpath
 
 echo "</classpath>" >> .classpath
 
-rm jar_list
+rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
 rm .classpath_aux
 
 cd ${ORIGINAL_WORKING_DIR}
