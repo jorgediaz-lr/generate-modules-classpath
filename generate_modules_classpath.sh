@@ -13,6 +13,12 @@ then
 	exit 0
 fi
 
+if [ ! -f .project ]
+then
+	echo "Error: '.project' file not found!!!"
+	exit 0
+fi
+
 if [ ! -d modules ]
 then
 	echo "Error: 'modules' directory not found!!!"
@@ -98,6 +104,13 @@ echo "</classpath>" >> .classpath
 
 rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
 rm .classpath_aux
+
+if [ ! -f .project_backup ]
+then
+	mv .project .project_backup
+fi
+
+grep -v 1.0-name-matches-false-false-.gradle .project_backup > .project
 
 cd ${ORIGINAL_WORKING_DIR}
 
