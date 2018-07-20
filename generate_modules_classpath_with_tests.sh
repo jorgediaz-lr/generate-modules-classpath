@@ -49,10 +49,12 @@ fi
 NUMLINES=$(wc -l .classpath_backup | tr -d " " |cut -d"." -f1 )
 let NUMLINES=NUMLINES-1
 
-head -n $NUMLINES .classpath_backup | grep -v "path=\"modules" |grep -v "lib/development/jasper.jar" > .classpath
+head -n $NUMLINES .classpath_backup | grep -v "path=\"modules" |grep -v "lib/development/jasper.jar" > .classpath_new
 rm .classpath_aux 2> /dev/null
 
-rm java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6 2> /dev/null
+rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
+
+rm java_list_5 java_list_6 2> /dev/null
 
 find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" >> java_list_1 &
 
@@ -68,14 +70,21 @@ find modules -type d -name "integration" |grep "test/integration" | grep -v "/no
 
 wait
 
-for line in $(cat java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6)
+for line in $(cat java_list_1 java_list_2 java_list_3 java_list_4)
 do
 	echo -e "\t<classpathentry kind=\"src\" path=\"$line\"/>" >> .classpath_aux
 done
 
-rm java_list_1 java_list_2 java_list_3 java_list_4 java_list_5 java_list_6 2> /dev/null
+rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
 
-cat .classpath_aux | sort -u >> .classpath
+for line in $(cat java_list_5 java_list_6)
+do
+	echo -e "\t<classpathentry kind=\"src\" path=\"$line\"/>" >> .classpath_aux
+done
+
+rm java_list_5 java_list_6 2> /dev/null
+
+cat .classpath_aux | sort -u >> .classpath_new
 
 rm .classpath_aux
 
@@ -102,12 +111,14 @@ do
 	fi
 done
 
-cat .classpath_aux | sort -u >> .classpath
+cat .classpath_aux | sort -u >> .classpath_new
 
-echo "</classpath>" >> .classpath
+echo "</classpath>" >> .classpath_new
 
 rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
 rm .classpath_aux
+
+mv .classpath_new .classpath
 
 if [ ! -f .project_backup ]
 then
