@@ -105,7 +105,7 @@ wait
 for line in $(cat jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5)
 do
 	jar=$(basename $line)
-	if ! grep -q ${jar%-*}.jar .classpath_backup
+	if ! grep -q "/${jar%-*}.jar" .classpath_backup
 	then
 		echo -e "\t<classpathentry kind=\"lib\" path=\"$line\"/>" >> .classpath_aux
 	fi
