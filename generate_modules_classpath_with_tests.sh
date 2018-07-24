@@ -43,7 +43,7 @@ fi
 
 if [ ! -f .classpath_backup ]
 then
-	mv .classpath .classpath_backup
+	cp .classpath .classpath_backup
 fi
 
 NUMLINES=$(wc -l .classpath_backup | tr -d " " |cut -d"." -f1 )
@@ -122,7 +122,7 @@ mv .classpath_new .classpath
 
 if [ ! -f .project_backup ]
 then
-	mv .project .project_backup
+	cp .project .project_backup
 fi
 
 grep -v 1.0-name-matches-false-false-.gradle .project_backup > .project
