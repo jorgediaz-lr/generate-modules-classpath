@@ -7,7 +7,7 @@ Just copy the sh files to your system
 
 You can also add following line to your system aliases:
 
-   * `alias generate_modules_classpath='curl https://raw.githubusercontent.com/jorgediaz-lr/generate-modules-classpath/master/generate_modules_classpath.sh | sh'`
+   * `alias generate_modules_classpath='curl https://raw.githubusercontent.com/jorgediaz-lr/generate-modules-classpath/master/generate_modules_classpath.sh | bash'`
 
 (thanks to Cleydyr de Albuquerque for this idea)
 
