@@ -47,9 +47,12 @@ then
 fi
 
 NUMLINES=$(wc -l .classpath_backup | tr -d " " |cut -d"." -f1 )
-let NUMLINES=NUMLINES-1
+let NUMLINES=NUMLINES-2
 
 head -n $NUMLINES .classpath_backup | grep -v "path=\"modules" |grep -v "lib/development/jasper.jar" > .classpath_new
+
+echo "\t<classpathentry kind=\"output\" path=\"bin/portal\" />" >> .classpath_new
+
 rm .classpath_aux 2> /dev/null
 
 rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
@@ -66,7 +69,7 @@ wait
 
 for line in $(cat java_list_1 java_list_2 java_list_3 java_list_4)
 do
-	echo -e "\t<classpathentry kind=\"src\" path=\"$line\"/>" >> .classpath_aux
+	echo -e "\t<classpathentry kind=\"src\" path=\"$line\" output=\"bin/${line}\" />" >> .classpath_aux
 done
 
 rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
