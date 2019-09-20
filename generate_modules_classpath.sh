@@ -75,7 +75,7 @@ cat .classpath_aux | sort -u >> .classpath_new
 
 rm .classpath_aux
 
-rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
+rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 2> /dev/null
 
 for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do (find $i -type f -name "*.jar" |tail -1) & done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" >> jar_list_1 &
 
@@ -83,13 +83,11 @@ find ${GRADLE_DIR}/wrapper/dists -type f -name "gradle*.jar"  |grep LIFERAY-PATC
 
 find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
-find modules/apps/static -type f -name "*.jar" |grep -v sources >> jar_list_4 &
-
-find modules/private/apps/documentum -type f -name "*.jar" 2> /dev/null |grep -v "com.liferay" >> jar_list_5 &
+find modules/apps/static -type f -name "*.jar" |grep -v sources |grep -v /build/tmp >> jar_list_4 &
 
 wait
 
-for line in $(cat jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5)
+for line in $(cat jar_list_1 jar_list_2 jar_list_3 jar_list_4)
 do
 	jar=$(basename $line)
 	if ! grep -q "/${jar%-*}.jar" .classpath_backup
@@ -102,7 +100,7 @@ cat .classpath_aux | sort -u >> .classpath_new
 
 echo "</classpath>" >> .classpath_new
 
-rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 jar_list_5 2> /dev/null
+rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 2> /dev/null
 rm .classpath_aux
 
 mv .classpath_new .classpath
