@@ -54,9 +54,9 @@ rm .classpath_aux 2> /dev/null
 
 rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
 
-find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "modules/test/" >> java_list_1 &
+find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" >> java_list_1 &
 
-find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" | grep -v "modules/test/" >> java_list_2 &
+find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" >> java_list_2 &
 
 find modules -type d -name "service" |grep docroot/WEB-INF/service |grep -v "com/liferay" >> java_list_3 &
 
@@ -85,7 +85,7 @@ find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
 find modules/apps/static -type f -name "*.jar" |grep -v sources >> jar_list_4 &
 
-find modules/private/apps/documentum -type f -name "*.jar" |grep -v "com.liferay" >> jar_list_5 &
+find modules/private/apps/documentum -type f -name "*.jar" 2> /dev/null |grep -v "com.liferay" >> jar_list_5 &
 
 wait
 

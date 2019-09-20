@@ -98,7 +98,7 @@ find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
 find modules/apps/static -type f -name "*.jar" |grep -v sources >> jar_list_4 &
 
-find modules/private/apps/documentum -type f -name "*.jar" |grep -v "com.liferay" >> jar_list_5 &
+find modules/private/apps/documentum -type f -name "*.jar" 2> /dev/null |grep -v "com.liferay" >> jar_list_5 &
 
 wait
 
