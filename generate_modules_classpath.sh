@@ -57,9 +57,9 @@ rm .classpath_aux 2> /dev/null
 
 rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
 
-find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" >> java_list_1 &
+find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" | grep -v "modules/etl/" >> java_list_1 &
 
-find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" >> java_list_2 &
+find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" | grep -v "modules/test/" | grep -v "modules/sdk/" | grep -v "modules/third-party/" | grep -v "modules/util/" | grep -v "modules/post-upgrade-fix/" | grep -v "modules/etl/" >> java_list_2 &
 
 find modules -type d -name "service" |grep docroot/WEB-INF/service |grep -v "com/liferay" >> java_list_3 &
 
@@ -82,7 +82,7 @@ rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 2> /dev/null
 
 for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do (find $i -type f -name "*.jar" |tail -1) & done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" >> jar_list_1 &
 
-find ${GRADLE_DIR}/wrapper/dists -type f -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list_2 &
+touch jar_list_2 &
 
 find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
