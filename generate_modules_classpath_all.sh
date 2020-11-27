@@ -59,17 +59,17 @@ rm java_list_1 java_list_2 java_list_3 java_list_4 2> /dev/null
 
 rm java_list_5 java_list_6 2> /dev/null
 
-find modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" >> java_list_1 &
+find -L modules -type d -name "java" |grep "src/main/java" | sort -u | grep -v "src/main/resources" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" >> java_list_1 &
 
-find modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" >> java_list_2 &
+find -L modules -type d -name "resources" |egrep "src/main/resources$" | sort -u | grep -v "src/main/resources/META-INF/resources" | grep -v "src/main/java" | grep -v "samples/src" | grep -v "src/main/java/com/liferay" | grep -v "resources/src/main/resources" >> java_list_2 &
 
-find modules -type d -name "service" |grep docroot/WEB-INF/service |grep -v "com/liferay" >> java_list_3 &
+find -L modules -type d -name "service" |grep docroot/WEB-INF/service |grep -v "com/liferay" >> java_list_3 &
 
-find modules -type d -name "src" |grep "docroot/WEB-INF" >> java_list_4 &
+find -L modules -type d -name "src" |grep "docroot/WEB-INF" >> java_list_4 &
 
-find . -type d -name "java" |grep -v "src/main/java" |grep "src/test" | sort -u >> java_list_5 &
+find -L . -type d -name "java" |grep -v "src/main/java" |grep "src/test" | sort -u >> java_list_5 &
 
-find modules -type d -name "integration" |grep "test/integration" | grep -v "/node_modules/" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u >> java_list_6 &
+find -L modules -type d -name "integration" |grep "test/integration" | grep -v "/node_modules/" | grep -v "src/main/java/com/liferay" | grep -v "src/main/resources/com/liferay" | sort -u >> java_list_6 &
 
 wait
 
@@ -93,13 +93,13 @@ rm .classpath_aux
 
 rm jar_list_1 jar_list_2 jar_list_3 jar_list_4 2> /dev/null
 
-for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do (find $i -type f -name "*.jar" |tail -1) & done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" >> jar_list_1 &
+for i in $(ls -1d ${GRADLE_DIR}/caches/modules-2/files-2.1/*/*); do (find -L $i -type f -name "*.jar" |tail -1) & done |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay/com.liferay." |grep -v ".gradle/caches/modules-2/files-2.1/com.liferay.portal" >> jar_list_1 &
 
-find ${GRADLE_DIR}/wrapper/dists -type f -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list_2 &
+find -L ${GRADLE_DIR}/wrapper/dists -type f -name "gradle*.jar"  |grep LIFERAY-PATCHED >> jar_list_2 &
 
-find modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
+find -L modules/apps/opensocial -type f -name "shindig-*.jar" >> jar_list_3 &
 
-find modules/apps/static -type f -name "*.jar" |grep -v sources |grep -v /build/tmp >> jar_list_4 &
+find -L modules/apps/static -type f -name "*.jar" |grep -v sources |grep -v /build/tmp >> jar_list_4 &
 
 wait
 
