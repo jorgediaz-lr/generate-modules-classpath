@@ -23,7 +23,7 @@ For windows users: you can launch the script using git bash, [cygwin](https://ww
 4. The script will make a backup of original eclipse `.classpath` in `.classpath_backup` and `.classpath` will be populated with all src and jar files from osgi modules
 5. Open eclipse and execute a refresh+clean of the project
 
-In case you also want to add tests classes to classpath, use `generate_modules_classpath_with_tests.sh`
+In case you also want to add tests classes to classpath, use `generate_modules_classpath_all.sh`
  
 ## Result
 You will see all src modules and you will be able to find any liferay class from modules
